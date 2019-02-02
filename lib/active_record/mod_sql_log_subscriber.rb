@@ -10,7 +10,7 @@ module ActiveRecord
   class ModSqlLogSubscriber < ::ActiveRecord::LogSubscriber
     include ActiveSupport::Configurable
 
-    VERSION = "0.1.0"
+    VERSION = "0.0.1"
 
     config_accessor :disable, :log_level, :log_format, :target_statements
 
@@ -18,7 +18,7 @@ module ActiveRecord
     self.disable = false
     self.log_level = :info
     self.log_format = :text
-    self.target_statements = %w(insert update delete truncate begin commit rollback)
+    self.target_statements = %w(insert update delete truncate begin commit rollback savepoint release\ savepoint)
 
     def sql(event)
       return if self.disable
