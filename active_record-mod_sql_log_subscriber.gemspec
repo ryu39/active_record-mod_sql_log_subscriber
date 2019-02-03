@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["ryu39"]
   spec.email         = ["dev.ryu39@gmail.com"]
 
-  spec.summary       = %q{Logging only mod sql log subscriber.}
-  spec.description   = %q{Logging only mod sql log subscriber.}
+  spec.summary       = %q{An ActiveRecord::LogSubscriber which records only mod sql.}
+  spec.description   = %q{An ActiveRecord::LogSubscriber which records only mod sql.}
   spec.homepage      = "https://github.com/ryu39/active_record-mod_sql_log_subscriber"
   spec.license       = "MIT"
 
@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.17"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec"
 end
