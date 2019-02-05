@@ -42,12 +42,12 @@ module ActiveRecord
     end
 
     def extract_binds(payload)
-      binds = {}
+      binds = []
       unless (payload[:binds] || []).empty?
         casted_params = type_casted_binds(payload[:type_casted_binds])
         payload[:binds].zip(casted_params).map do |attr, value|
           key, val = render_bind(attr, value)
-          binds[key] = val
+          binds << [key, val]
         end
       end
       binds
