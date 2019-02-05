@@ -10,3 +10,4 @@
 Gemfile.lock
 .ruby-version
 .rspec
+/db/*.sqlite3
