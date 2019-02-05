@@ -71,6 +71,39 @@ $ rails c
 # => "UPDATE users SET name = 'New name' WHERE id = $1  {:id=>1}"
 ```
 
+### Try console
+
+You can try this gem by cloning this repo and run `bin/setup` and `bin/console`.
+
+```
+$ git clone https://github.com/ryu39/active_record-mod_sql_log_subscriber.git
+$ cd active_record-mod_sql_log_subscriber
+
+# Run bundle install and create sqlite3 database.
+$ bin/setup
+
+# Connect sqlite3 database and start IRB.
+$ bin/console
+
+> User.count # => no log
+
+> User.create!(name: 'name', age: 20, birth_date: Date.new(2000, 1, 1))
+# => I, [2019-02-05T11:04:07.489057 #42019]  INFO -- : begin transaction
+#    I, [2019-02-05T11:04:07.490495 #42019]  INFO -- : INSERT INTO "users" ("name", "age", "birth_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "name"], ["age", 20], ["birth_date", "2000-01-01"], ["created_at", "2019-02-05 02:04:07.489226"], ["updated_at", "2019-02-05 02:04:07.489226"]]
+#    I, [2019-02-05T11:04:07.492610 #42019]  INFO -- : commit transaction
+
+> user = User.last # => no log
+> user.update_attributes(name: 'new name')
+# => I, [2019-02-05T11:04:52.971503 #42019]  INFO -- : begin transaction
+#    I, [2019-02-05T11:04:52.973071 #42019]  INFO -- : UPDATE "users" SET "name" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["name", "new name"], ["updated_at", "2019-02-05 02:04:52.971865"], ["id", 2]]
+#    I, [2019-02-05T11:04:52.974081 #42019]  INFO -- : commit transaction
+
+> user.destroy
+# => I, [2019-02-05T11:05:13.765564 #42019]  INFO -- : begin transaction
+#    I, [2019-02-05T11:05:13.775460 #42019]  INFO -- : DELETE FROM "users" WHERE "users"."id" = ?  [["id", 2]]
+#    I, [2019-02-05T11:05:13.776722 #42019]  INFO -- : commit transaction
+```
+
 ## Configuration
 
 You can configure this subscriber before attaching to :active_record namespace
