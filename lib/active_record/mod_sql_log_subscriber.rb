@@ -10,7 +10,7 @@ module ActiveRecord
   class ModSqlLogSubscriber < ::ActiveRecord::LogSubscriber
     include ActiveSupport::Configurable
 
-    VERSION = "0.1.0"
+    VERSION = "0.1.1"
 
     config_accessor :disable, :log_level, :log_format, :target_statements
 
