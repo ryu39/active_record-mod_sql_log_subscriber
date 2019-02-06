@@ -25,6 +25,10 @@ The mod-SQL is shown as follows.
 * I want to write logs only mod-SQL(INSERT, UPDATE, DELETE, ...) and transaction SQL(BEGIN, COMMIT, ROLLBACK, ...).
   So I create this gem.
 
+## Requirements
+
+* Rails >= 5.1.5
+
 ## Installation
 
 Add this line to your application's Gemfile:
