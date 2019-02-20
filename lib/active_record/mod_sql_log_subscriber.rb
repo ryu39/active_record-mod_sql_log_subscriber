@@ -31,7 +31,7 @@ module ActiveRecord
       return if IGNORE_PAYLOAD_NAMES.include?(payload[:name])
       return unless target_sql_checker.match?(sql)
 
-      binds = extract_binds(payload)
+      binds = type_casted_binds(payload[:type_casted_binds])
       send(self.log_level, formatter.call(sql, binds))
     end
 
@@ -39,18 +39,6 @@ module ActiveRecord
 
     def target_sql_checker
       @target_sql_checker ||= /\A\s*(#{self.target_statements.join('|')})/mi
-    end
-
-    def extract_binds(payload)
-      binds = []
-      unless (payload[:binds] || []).empty?
-        casted_params = type_casted_binds(payload[:type_casted_binds])
-        payload[:binds].zip(casted_params).map do |attr, value|
-          key, val = render_bind(attr, value)
-          binds << [key, val]
-        end
-      end
-      binds
     end
 
     def formatter
