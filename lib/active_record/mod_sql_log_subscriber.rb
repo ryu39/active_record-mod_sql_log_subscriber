@@ -10,7 +10,7 @@ module ActiveRecord
   class ModSqlLogSubscriber < ::ActiveRecord::LogSubscriber
     include ActiveSupport::Configurable
 
-    VERSION = "0.1.2"
+    VERSION = "0.2.0"
 
     config_accessor :disable, :log_level, :log_format, :target_statements
 
@@ -31,8 +31,10 @@ module ActiveRecord
       return if IGNORE_PAYLOAD_NAMES.include?(payload[:name])
       return unless target_sql_checker.match?(sql)
 
-      binds = type_casted_binds(payload[:type_casted_binds])
-      send(self.log_level, formatter.call(sql, binds))
+      send(self.log_level) do
+        binds = type_casted_binds(payload[:type_casted_binds])
+        formatter.call(sql, binds)
+      end
     end
 
     private

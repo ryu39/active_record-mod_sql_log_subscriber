@@ -47,7 +47,7 @@ Or install it yourself as:
 
 ## Usage
 
-Create a file under`config/initializer`, configure log subscriber, 
+Create a file under`config/initializer`, configure log subscriber,
 and attach to :active_record namespace.
 
 ```
@@ -97,12 +97,12 @@ $ bin/console
 #    I, [2019-02-05T11:04:07.492610 #42019]  INFO -- : commit transaction
 
 > user = User.last # => no log
-> user.update_attributes(name: 'new name')
+> user.update!(name: 'new name')
 # => I, [2019-02-05T11:04:52.971503 #42019]  INFO -- : begin transaction
 #    I, [2019-02-05T11:04:52.973071 #42019]  INFO -- : UPDATE "users" SET "name" = ?, "updated_at" = ? WHERE "users"."id" = ?  ["new name", "2019-02-20 05:00:37.983816", 2]
 #    I, [2019-02-05T11:04:52.974081 #42019]  INFO -- : commit transaction
 
-> user.destroy
+> user.destroy!
 # => I, [2019-02-05T11:05:13.765564 #42019]  INFO -- : begin transaction
 #    I, [2019-02-05T11:05:13.775460 #42019]  INFO -- : DELETE FROM "users" WHERE "users"."id" = ?  [2]
 #    I, [2019-02-05T11:05:13.776722 #42019]  INFO -- : commit transaction
@@ -134,7 +134,7 @@ This is useful in development/test env because duplicated sql logs are written i
 ::ActiveRecord::ModSqlLogSubscriber.configure do |config|
   config.disable = false # enabled
   config.disable = true # disabled
-  
+
   config.disable = ::ActiveRecord::Base.logger.debug? # Recommended
 end
 ```
@@ -167,11 +167,11 @@ You can add/change/remove target SQL statements.
 ```
 ::ActiveRecord::ModSqlLogSubscriber.configure do |config|
   # Add MERGE SQL
-  config.target_statements << 'merge' 
-  
+  config.target_statements << 'merge'
+
   # Remove BEGIN SQL
   config.target_stagements.delete('begin')
-  
+
   # Orverwite your target statements
   config.target_statements = %w(insert update delete)
 end
@@ -179,18 +179,18 @@ end
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. 
+After checking out the repo, run `bin/setup` to install dependencies.
 You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. 
-To release a new version, update the version number in `mod_sql_log_subscriber.r`, 
-and then run `bundle exec rake release`, which will create a git tag for the version, 
+To install this gem onto your local machine, run `bundle exec rake install`.
+To release a new version, update the version number in `mod_sql_log_subscriber.r`,
+and then run `bundle exec rake release`, which will create a git tag for the version,
 push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/ryu39/active_record-mod_sql_log_subscriber. 
-This project is intended to be a safe, welcoming space for collaboration, 
+Bug reports and pull requests are welcome on GitHub at https://github.com/ryu39/active_record-mod_sql_log_subscriber.
+This project is intended to be a safe, welcoming space for collaboration,
 and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
@@ -199,5 +199,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the ActiveRecord::ModSqlLogSubscriber project’s codebases, issue trackers, 
+Everyone interacting in the ActiveRecord::ModSqlLogSubscriber project’s codebases, issue trackers,
 chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/ryu39/active_record-mod_sql_log_subscriber/blob/master/CODE_OF_CONDUCT.md).
