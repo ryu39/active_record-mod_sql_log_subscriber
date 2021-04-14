@@ -31,8 +31,10 @@ module ActiveRecord
       return if IGNORE_PAYLOAD_NAMES.include?(payload[:name])
       return unless target_sql_checker.match?(sql)
 
-      binds = type_casted_binds(payload[:type_casted_binds])
-      send(self.log_level, formatter.call(sql, binds))
+      send(self.log_level) do
+        binds = type_casted_binds(payload[:type_casted_binds])
+        formatter.call(sql, binds)
+      end
     end
 
     private

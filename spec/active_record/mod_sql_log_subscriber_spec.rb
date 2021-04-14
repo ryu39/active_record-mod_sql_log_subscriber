@@ -166,6 +166,9 @@ require 'active_record/mod_sql_log_subscriber'
     end
 
     describe 'log_format' do
+      let(:sio) { StringIO.new }
+      let(:logger) { Logger.new(sio) }
+
       before do
         ::ActiveRecord::ModSqlLogSubscriber.log_format = log_format
       end
@@ -182,8 +185,7 @@ require 'active_record/mod_sql_log_subscriber'
 
           subscriber.sql(to_event(sql: sql, binds: binds, type_casted_binds: type_casted_binds))
 
-          expect(logger).to have_received(:info)
-                              .with('DELETE FROM users WHERE id = $1  [1]')
+          expect(sio.string).to include('DELETE FROM users WHERE id = $1  [1]')
         end
       end
 
@@ -199,8 +201,7 @@ require 'active_record/mod_sql_log_subscriber'
 
           subscriber.sql(to_event(sql: sql, binds: binds, type_casted_binds: type_casted_binds))
 
-          expect(logger).to have_received(:info)
-                              .with('{"sql":"DELETE FROM users WHERE id = $1","binds":[1]}')
+          expect(sio.string).to include('{"sql":"DELETE FROM users WHERE id = $1","binds":[1]}')
         end
       end
 
@@ -216,7 +217,8 @@ require 'active_record/mod_sql_log_subscriber'
 
           subscriber.sql(to_event(sql: sql, binds: binds, type_casted_binds: type_casted_binds))
 
-          expect(logger).to have_received(:info).with({ sql: sql, binds: [1] })
+          # expect(logger).to have_received(:info).with({ sql: sql, binds: [1] })
+          expect(sio.string).to include('{:sql=>"DELETE FROM users WHERE id = $1", :binds=>[1]}')
         end
       end
 
@@ -232,7 +234,7 @@ require 'active_record/mod_sql_log_subscriber'
 
           subscriber.sql(to_event(sql: sql, binds: binds, type_casted_binds: type_casted_binds))
 
-          expect(logger).to have_received(:info).with('custom proc')
+          expect(sio.string).to include('custom proc')
         end
       end
 
