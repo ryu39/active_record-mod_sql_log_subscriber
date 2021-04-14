@@ -45,7 +45,7 @@ module ActiveRecord
       @formatter ||=
         case self.log_format
         when :text
-          ->(sql, binds) { binds.empty? ? sql : "#{sql}  #{binds.inspect}" }
+          ->(sql, binds) { binds&.empty? ? sql : "#{sql}  #{binds.inspect}" }
         when :json
           -> (sql, binds) { ::JSON.generate(sql: sql, binds: binds) }
         when :hash

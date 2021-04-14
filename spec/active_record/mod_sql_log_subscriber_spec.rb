@@ -183,7 +183,7 @@ require 'active_record/mod_sql_log_subscriber'
           subscriber.sql(to_event(sql: sql, binds: binds, type_casted_binds: type_casted_binds))
 
           expect(logger).to have_received(:info)
-                              .with('DELETE FROM users WHERE id = $1  {:id=>1}')
+                              .with('DELETE FROM users WHERE id = $1  [1]')
         end
       end
 
@@ -200,7 +200,7 @@ require 'active_record/mod_sql_log_subscriber'
           subscriber.sql(to_event(sql: sql, binds: binds, type_casted_binds: type_casted_binds))
 
           expect(logger).to have_received(:info)
-                              .with('{"sql":"DELETE FROM users WHERE id = $1","binds":{"id":1}}')
+                              .with('{"sql":"DELETE FROM users WHERE id = $1","binds":[1]}')
         end
       end
 
@@ -216,7 +216,7 @@ require 'active_record/mod_sql_log_subscriber'
 
           subscriber.sql(to_event(sql: sql, binds: binds, type_casted_binds: type_casted_binds))
 
-          expect(logger).to have_received(:info).with({ sql: sql, binds: { id: 1 } })
+          expect(logger).to have_received(:info).with({ sql: sql, binds: [1] })
         end
       end
 
